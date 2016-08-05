@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html style="font-size:14px;" ng-app="selected">
+  <head>
+    <title>Selected Challenge</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../semantic/out/semantic.min.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/ngtoast/dist/ngToast.min.css">
+
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/angular/angular.min.js"></script>
+
+    <script src="../semantic/out/semantic.min.js"></script>
+    <!-- <script src="../node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="../node_modules/ngtoast/dist/ngToast.min.js"></script>
+    <script src="../node_modules/angular-animate/angular.min.js"></script> -->
+    <script src="../node_modules/socket.io-client/socket.io.js"></script>
+    <script src="moment.js"></script>
+    <script src="app.js"></script>
+    <script src="selected.controller.js"></script>
+    <script src="selected.factory.js"></script>
+    <script src="selected.directive.js"></script>
+
+  </head>
+  <body ng-controller="SelectedCtrl">
+
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <a href="#" class="item header">
+          <i class="home icon"></i> Selected
+        </a>
+      </div>
+    </div>
+
+    <div class="ui main text container">
+      <h1 class="ui header">
+        Selected - SMS
+      </h1>
+      <p>
+        Type in a phone number to send a message! (Only in the US for now)
+      </p>
+      <div class="ui fluid action input">
+        <input type="tel" placeholder="(xxx)xxx-xxxx" ng-model="phoneNumber.toSend" phone-input maxlength="14">
+        <div ng-click="sendText(phoneNumber.toSend)" class="ui button">Send a Text!</div>
+      </div>
+
+      <table class="ui celled table">
+        <thead>
+          <tr>
+            <th>Phone Number</th>
+            <th>Messages Sent</th>
+            <th>Reply Message</th>
+            <th>Last Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="row in dataHistory">
+            <td ng-class="checker(row.reply)">{{row.phonenumber}}</td>
+            <td ng-class="checker(row.reply)">{{row.sent}}</td>
+            <td ng-class="checker(row.reply)">
+              <i ng-show="checker(row.reply) === 'positive'" class="icon checkmark"></i>
+              <i ng-show="checker(row.reply) === 'negative'" class="icon remove"></i>
+              <i ng-show="isBlank(row.reply)" class="icon mail"></i>
+              <span ng-show="isBlank(row.reply)">Message Sent</span>
+              {{row.reply}}
+            </td>
+            <td ng-class="checker(row.reply)">{{row.updatedAt | moment: 'fromNow'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
